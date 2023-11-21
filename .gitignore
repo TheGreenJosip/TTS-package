@@ -1,0 +1,14 @@
+.env
+node_modules
+
+# Ignore everything in this  directories
+files/*
+recordings/*
+
+# But not the files directory itself
+!files/.gitkeep
+!recordings/.gitkeep
+
+# Logs
+logs
+

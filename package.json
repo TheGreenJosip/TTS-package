@@ -1,0 +1,29 @@
+{
+  "name": "tts-package",
+  "version": "1.0.0",
+  "description": "A Text-to-Speech service using OpenAI and Azure AI for converting text into natural-sounding speech.",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "tts",
+    "text-to-speech",
+    "azure-ai",
+    "openai",
+    "speech-synthesis"
+  ],
+  "author": "Your Name",
+  "license": "ISC",
+  "dependencies": {
+    "clipboardy": "github:sindresorhus/clipboardy",
+    "date-fns": "^2.30.0",
+    "dotenv": "^16.3.1",
+    "microsoft-cognitiveservices-speech-sdk": "^1.33.1",
+    "openai": "^4.19.0",
+    "pdf-parse": "^1.1.1",
+    "play-sound": "^1.1.6",
+    "speaker": "^0.5.4"
+  }
+}
