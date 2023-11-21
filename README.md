@@ -45,7 +45,13 @@ The package can be used in two main ways:
 
 ### As a Clipboard Listener
 
-To start the clipboard listener in the background:
+You can start the clipboard-listener either normally in foreground and leave it opeen in a separate teerminal window:
+
+```bash
+node clipboardListener.js 
+```
+
+Or you can start the clipboard listener in the background by using pm2:
 
 ```bash
 npm install pm2
