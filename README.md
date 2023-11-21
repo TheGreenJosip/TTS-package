@@ -41,11 +41,11 @@ Before using the TTS package, you need to set up your environment variables:
 
 ## Usage
 
-The package can be used in two main ways:
+The package can be used in two main ways. Either listening to the clipboard or reading files presented.
 
 ### As a Clipboard Listener
 
-You can start the clipboard-listener either normally in foreground and leave it opeen in a separate teerminal window:
+You can start the clipboard-listener either normally in foreground and leave it open in a separate terminal window:
 
 ```bash
 node clipboardListener.js 
