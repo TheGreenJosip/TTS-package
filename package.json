@@ -1,0 +1,23 @@
+{
+  "name": "new-listener",
+  "version": "1.0.0",
+  "description": "",
+  "main": "clipboardListener.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "chalk": "^5.3.0",
+    "clipboardy": "^4.0.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "microsoft-cognitiveservices-speech-sdk": "^1.36.0",
+    "play-sound": "^1.1.6",
+    "speaker": "^0.5.4"
+  }
+}
