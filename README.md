@@ -11,7 +11,7 @@ The TTS (Text-to-Speech) Application is a Node.js-based service designed to conv
 
 ## Prerequisites
 
-- Node.js (v14 or newer recommended)
+- Node.js (18.5 or newer recommended)
 - An Azure account with a Cognitive Services Speech subscription
 
 ## Installation
@@ -19,8 +19,8 @@ The TTS (Text-to-Speech) Application is a Node.js-based service designed to conv
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/yourusername/tts-application.git
-   cd tts-application
+   git clone https://github.com/TheGreenJosip/TTS-package
+   cd TTS-package
    ```
 
 2. **Install dependencies**
@@ -39,14 +39,29 @@ The TTS (Text-to-Speech) Application is a Node.js-based service designed to conv
 
 3. **Configure environment variables**
 
-   Create a `.env` file in the root directory of the project, and add your Azure Cognitive Services Speech subscription key and region:
+   Create a `.env` file based on the .env.sample in the root directory of the project, and add your Azure Cognitive Services Speech subscription key and region:
 
    ```plaintext
    SPEECH_KEY=your_subscription_key_here
    SPEECH_REGION=your_region_here
    ```
 
+   You can adapt the key word where the service will sttart picking up your input and also the port for the API running in the background providing an endpoint to integrate a siri shortcut for example.
+
+
+   ```plaintext
+   TRIGGER_WORD=your_trigger_word
+   PORT=your_api_port
+   ```
+
 ## Usage
+
+You'll find two files dedicated to manipulate the input text before sending it to azure cognitive speech service. Common markdown and XML based formatting is adapted to not produce errors. Each file is descriptive and can be customized to match different preferences.
+
+  ```plaintext
+   markdownPreprocessor.js
+   xmlEscaper.js
+   ```
 
 ### Starting the Application
 
@@ -56,19 +71,21 @@ Run the application with the following command:
 node clipboardListener.js
 ```
 
-The server will start listening for clipboard changes and HTTP POST requests on port 3000.
+The server will start listening for clipboard changes and HTTP POST requests on the set port.
 
 ### Sending Text via HTTP
 
 To send text for speech synthesis via HTTP, use the following `curl` command:
 
 ```bash
-curl -X POST http://localhost:3000/tts -H "Content-Type: application/json" -d "{\"text\":\"Hello, world!\"}"
+curl -X POST http://localhost:PORT/tts -H "Content-Type: application/json" -d "{\"text\":\"Hello, world!\"}"
 ```
 
 ### Copying Text to Clipboard
 
-Prefix any text with "TTS" and copy it to the clipboard. The application will automatically detect and process the text.
+Prefix any text with "TTS/tts" by default or use your own word and copy it to the clipboard. The application will automatically detect and process the text.
+
+You can also add text subsequently to a queue which the service will speak one after another.
 
 ## Files and Directories
 
@@ -93,7 +110,25 @@ Contributions to the TTS Application are welcome! Please follow these steps to c
 
 Please ensure your code adheres to the project's coding standards and include tests for new features or fixes.
 
+## Starting in the Background
+
+To use the service as background listener use pm2 like:
+
+```bash
+pm2 start clipboardListener.js --name tts
+```
+You can stop and start it also using the following comands:
+
+```bash
+pm2 stop tts
+```
+
+and 
+
+```bash
+pm2 start clipboardListener.js --name tts
+```
+
 ## License
 
-This project is licensed under the [MIT License](LICENSE). See the LICENSE file for details.
-
+This project is licensed under the [MIT License](LICENSE), and can be used freely.
