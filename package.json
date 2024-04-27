@@ -1,22 +1,25 @@
 {
-  "name": "new-listener",
+  "name": "azure-tts",
   "version": "1.0.0",
   "description": "",
   "main": "clipboardListener.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "node clipboardListener.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.6.8",
     "body-parser": "^1.20.2",
     "chalk": "^5.3.0",
+    "cheerio": "1.0.0-rc.12",
     "clipboardy": "^4.0.0",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "microsoft-cognitiveservices-speech-sdk": "^1.36.0",
+    "node-notifier": "^10.0.1",
     "play-sound": "^1.1.6",
     "speaker": "^0.5.4"
   }

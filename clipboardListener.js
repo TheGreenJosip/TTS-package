@@ -1,16 +1,18 @@
+// clipboardListener.js
+
 // Import necessary modules
 import os from 'os';
+import { exec } from 'child_process';
 import dotenv from 'dotenv';
 import express from 'express';
 import bodyParser from 'body-parser';
 import clipboardy from 'clipboardy';
 import { textToSpeechAzureAI } from './ttsServiceAzureAI.js';
 import { prepareTextForTTS } from './markdownPreprocessor.js';
-import { listAudioDevices  } from './audioSource.js';
 import { escapeXML } from './xmlEscaper.js';
+import { extractTextFromURL } from './textExtractor.js';
 import Speaker from 'speaker';
-import play from 'play-sound';
-import fs from 'fs/promises';
+import { PassThrough } from 'stream';
 import chalk from 'chalk';
 
 // Load environment variables from .env file
@@ -32,43 +34,71 @@ function log(message, level = 'info') {
   const timestamp = new Date().toISOString();
   switch (level) {
     case 'info':
-      console.log(`${chalk.blue('[INFO]')} ${message}`);
+      console.log(`${chalk.blue('[INFO]')} ${timestamp} ${message}`);
       break;
     case 'error':
-      console.error(`${chalk.red('[ERROR]')} ${chalk.gray(timestamp)} ${message}`);
+      console.error(`${chalk.red('[ERROR]')} ${timestamp} ${message}`);
       break;
     case 'request':
-      console.log(`${chalk.green('[REQUEST]')} ${message}`);
+      console.log(`${chalk.green('[REQUEST]')} ${timestamp} ${message}`);
       break;
     default:
-      console.log(`${chalk.yellow('[LOG]')} ${message}`);
+      console.log(`${chalk.yellow('[LOG]')} ${timestamp} ${message}`);
   }
+}
+
+function sendNotification(message) {
+  exec(`terminal-notifier -message "${message}" -title "TTS-listener"`, (error) => {
+    if (error) {
+      console.error(`Notification error: ${error}`);
+    }
+  });
 }
 
 // Initialize Express app
 const app = express();
-// Use bodyParser middleware for parsing JSON bodies
 app.use(bodyParser.json());
 
-// Set the port from environment variable or default to 3000
 const port = process.env.PORT || 3000;
 
-// Initialize variables and configurations
-const player = play();
 let lastClipboardContent = '';
 const ttsQueue = [];
 let isProcessingQueue = false;
+let currentSpeaker = null;
+let audioStreamPassThrough = new PassThrough();
 
-// Function to clean and prepare text for TTS, then add it to the queue
+async function playAudioStream(audioStream) {
+  if (currentSpeaker) {
+    currentSpeaker.end();
+  }
+
+  audioStreamPassThrough = new PassThrough();
+  audioStream.pipe(audioStreamPassThrough);
+
+  const speaker = new Speaker({
+    channels: 1,
+    bitDepth: 16,
+    sampleRate: 48000,
+  });
+
+  currentSpeaker = speaker;
+  audioStreamPassThrough.pipe(speaker);
+
+  return new Promise((resolve, reject) => {
+    speaker.on('close', resolve);
+    speaker.on('error', reject);
+  });
+}
+
 function addToTTSQueue(text) {
   const processedText = prepareTextForTTS(text);
   const escapedText = escapeXML(processedText);
   ttsQueue.push(escapedText);
-  console.log(`New message added to queue. Queue length: ${ttsQueue.length}`);
+  sendNotification('New TTS input received.');
+  log('New message added to queue. Queue length: ' + ttsQueue.length);
   processQueue();
 }
 
-// Function to process the TTS queue
 async function processQueue() {
   if (isProcessingQueue || ttsQueue.length === 0) {
     return;
@@ -76,73 +106,85 @@ async function processQueue() {
 
   isProcessingQueue = true;
   const textToConvert = ttsQueue.shift();
-  log('Starting TTS request for queued message...', 'info');
+  log('Starting TTS request for queued message...');
 
   try {
     const audioStream = await textToSpeechAzureAI(textToConvert);
-    log('TTS request completed.', 'info');
+    log('TTS request completed.');
+    log('Playing the audio stream...');
 
-    log('Playing the audio stream...', 'info');
-    const speaker = new Speaker({
-      channels: 1,
-      bitDepth: 16,
-      sampleRate: 48000,
-    });
+    await playAudioStream(audioStream);
 
-    audioStream.pipe(speaker);
-
-    speaker.on('close', () => {
-      log('Audio playback finished. Processing next item in queue...', 'info');
-      isProcessingQueue = false;
-      processQueue();
-    });
+    log('Audio playback finished. Processing next item in queue...');
+    isProcessingQueue = false;
+    processQueue();
   } catch (error) {
-    log(`An error occurred while processing TTS: ${error.message}`, 'error');
+    log('An error occurred while processing TTS: ' + error.message, 'error');
     isProcessingQueue = false;
     processQueue();
   }
 }
 
-// Function to check the clipboard for new TTS content
+function stopCurrentTTS() {
+  if (audioStreamPassThrough) {
+    audioStreamPassThrough.unpipe();
+    if (currentSpeaker) {
+      currentSpeaker.end();
+    }
+  }
+  ttsQueue.length = 0;
+  isProcessingQueue = false;
+  sendNotification('TTS playback stopped.');
+}
+
 async function checkClipboardForTTS() {
   try {
     const currentClipboardContent = clipboardy.readSync();
+    const triggerWord = process.env.TRIGGER_WORD || 'TTS'; // Default to 'TTS' if not set
+    const triggerRegex = new RegExp(`^${triggerWord}`, 'i'); // 'i' makes it case-insensitive
 
-    if (currentClipboardContent.startsWith('TTS') && currentClipboardContent !== lastClipboardContent) {
+    if (triggerRegex.test(currentClipboardContent) && currentClipboardContent !== lastClipboardContent) {
       lastClipboardContent = currentClipboardContent;
-      let textToConvert = currentClipboardContent.replace('TTS', '').trim();
+      let textToConvert = currentClipboardContent.replace(triggerRegex, '').trim();
       addToTTSQueue(textToConvert);
     }
   } catch (error) {
-    log('An error occurred while processing TTS:', error);
+    log('An error occurred while processing TTS: ' + error, 'error');
   }
 }
-
-// Define an HTTP POST route for adding text to the TTS queue
 
 app.post('/tts', (req, res) => {
   const { text } = req.body;
   if (!text) {
     return res.status(400).send('Text is required');
   }
-
-  // Log the IP address or hostname of the requester
-  // Note: req.ip or req.connection.remoteAddress can be used to get the requester's IP
-
-  // Use the log function for structured and colored output
-  log(`Received TTS request from ${req.ip} (hostname: ${req.hostname}) with text: ${text}`, 'request');
-
   addToTTSQueue(text);
   res.send('Text added to TTS queue.');
 });
 
-
-// Start the Express server
-app.listen(port, () => {
-  const localIP = getLocalIPAddress();
-  log(`Server listening at http://localhost:${port} and http://${localIP}:${port}`, 'info');
+app.post('/extract-text', async (req, res) => {
+  const { url } = req.body;
+  if (!url) {
+    return res.status(400).send('URL is required');
+  }
+  try {
+    const text = await extractTextFromURL(url);
+    addToTTSQueue(text);
+    res.send('Text extracted and added to TTS queue.');
+  } catch (error) {
+    res.status(500).send('Error processing your request: ' + error.message);
+  }
 });
 
-// Start checking the clipboard every second
+app.post('/stop-tts', (req, res) => {
+  stopCurrentTTS();
+  res.send('TTS playback stopped and queue cleared.');
+});
+
+app.listen(port, () => {
+  const localIP = getLocalIPAddress();
+  log(`Server listening at http://localhost:${port} and http://${localIP}:${port}`);
+});
+
 setInterval(checkClipboardForTTS, 1000);
 
