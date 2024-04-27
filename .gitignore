@@ -1,4 +1,3 @@
-
+# To be ignored by git
 .env
-
 /node_modules/*
