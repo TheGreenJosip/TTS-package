@@ -5,7 +5,9 @@
   "main": "clipboardListener.js",
   "type": "module",
   "scripts": {
-    "dev": "node clipboardListener.js"
+    "start": "node app.js",
+    "start:background": "pm2 start app.js --name tts",
+    "dev": "node app.js"
   },
   "keywords": [],
   "author": "",

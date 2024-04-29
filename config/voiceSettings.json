@@ -1,0 +1,148 @@
+{
+    "voiceName": "en-AU-FreyaNeural",
+    "options": {
+        "style": "newcast",
+        "rate": "medium",
+        "pitch": "low"
+    },
+    "ssmlDecorations": [
+        {
+            "type": "phoneme",
+            "text": "Node.js",
+            "phonetic": "noʊd dʒeɪ ɛs",
+            "comment": "Ensures 'Node.js' is pronounced clearly and correctly."
+        },
+        {
+            "type": "phoneme",
+            "text": "Azure",
+            "phonetic": "ˈæʒər",
+            "comment": "Corrects the pronunciation of 'Azure' to match the brand's pronunciation."
+        },
+        {
+            "type": "phoneme",
+            "text": "JSON",
+            "phonetic": "ˈdʒeɪsən",
+            "comment": "Pronounces 'JSON' as 'Jei SON' for a more natural sounding pronunciation."
+        },
+        {
+            "type": "say-as",
+            "interpret-as": "address",
+            "text": "150th CT NE, Redmond, WA",
+            "comment": "Ensures addresses are pronounced in a natural, understandable manner."
+        },
+        {
+            "type": "sub",
+            "original": "npm",
+            "substitute": "n pee em",
+            "comment": "Ensures 'npm' is read as individual letters for clarity."
+        },
+        {
+            "type": "sub",
+            "original": "pnpm",
+            "substitute": "pe en pee em",
+            "comment": "Ensures 'npm' is read as individual letters for clarity."
+        },
+        {
+            "type": "phoneme",
+            "text": "API",
+            "phonetic": "ˈeɪ piː ˈaɪ",
+            "comment": "Ensures 'API' is pronounced in a clear and standard way."
+        },
+        {
+            "type": "phoneme",
+            "text": "GitHub",
+            "phonetic": "ˈɡɪtˌhʌb",
+            "comment": "Corrects the pronunciation of 'GitHub' to match the brand's pronunciation."
+        },
+        {
+            "type": "phoneme",
+            "text": "SQL",
+            "phonetic": "ˈɛs kjuː ˈɛl",
+            "comment": "Ensures 'SQL' is pronounced as 'S-Q-L' instead of 'sequel'."
+        },
+        {
+            "type": "phoneme",
+            "text": "python",
+            "phonetic": "pʏˈtoʊŋ",
+            "comment": "Pronounces 'Python' as 'Pütong', with emphasis on the last syllable and a longer 'üüü'."
+        },
+        {
+            "type": "phoneme",
+            "text": "docker",
+            "phonetic": "ˈdɑːkər",
+            "comment": "Ensures 'Docker' is pronounced correctly."
+        },
+        {
+            "type": "phoneme",
+            "text": "Kubernetes",
+            "phonetic": "ˌkuːbərˈnɛtiz",
+            "comment": "Ensures 'Kubernetes' is pronounced correctly."
+        },
+        {
+            "type": "phoneme",
+            "text": "AWS",
+            "phonetic": "ˈeɪ ˈdʌbəl juː ˈɛs",
+            "comment": "Ensures 'AWS' is pronounced as 'A-W-S' instead of 'aws'."
+        },
+        {
+            "type": "phoneme",
+            "text": "GCP",
+            "phonetic": "ˈdʒiː siː piː",
+            "comment": "Ensures 'GCP' is pronounced as 'G-C-P' instead of 'gcp'."
+        },
+        {
+            "type": "say-as",
+            "interpret-as": "spell-out",
+            "text": "HTML",
+            "comment": "Spells out 'HTML' letter by letter for clarity."
+        },
+        {
+            "type": "phoneme",
+            "text": "RAG",
+            "phonetic": "ræg",
+            "comment": "Ensures 'RAG' is pronounced correctly, as in 'RAG-Fusion'."
+        },
+        {
+            "type": "say-as",
+            "interpret-as": "spell-out",
+            "text": "CSS",
+            "comment": "Spells out 'CSS' letter by letter for clarity."
+        },
+        {
+            "type": "phoneme",
+            "text": "PostgreSQL",
+            "phonetic": "ˌpoʊstɡrɛsˈkjuːˈɛl",
+            "comment": "Ensures 'PostgreSQL' is pronounced correctly."
+        },
+        {
+            "type": "phoneme",
+            "text": "TypeScript",
+            "phonetic": "ˈtaɪpˌskrɪpt",
+            "comment": "Ensures 'TypeScript' is pronounced correctly."
+        },
+        {
+            "type": "phoneme",
+            "text": "GraphQL",
+            "phonetic": "ˈɡræfˌkjuːˈɛl",
+            "comment": "Ensures 'GraphQL' is pronounced correctly."
+        },
+        {
+            "type": "phoneme",
+            "text": "Prisma",
+            "phonetic": "ˈprɪzmə",
+            "comment": "Ensures 'Prisma' is pronounced correctly."
+        },
+        {
+            "type": "phoneme",
+            "text": "Keystone.js",
+            "phonetic": "ˈkiːˌstoʊn dʒeɪ ɛs",
+            "comment": "Ensures 'Keystone.js' is pronounced correctly."
+        },
+        {
+            "type": "phoneme",
+            "text": "Next.js",
+            "phonetic": "ˈnɛkst dʒeɪ ɛs",
+            "comment": "Ensures 'Next.js' is pronounced correctly, including the 'dot'."
+        }
+    ]
+}

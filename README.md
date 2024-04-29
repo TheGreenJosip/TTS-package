@@ -1,134 +1,138 @@
-# TTS Application
+Given the restructuring and enhancements made to your project, the `README.md` should be updated to reflect these changes accurately. Below is a sophisticated and comprehensive `README.md` that incorporates all the modifications and adheres to best practices for documentation.
 
-The TTS (Text-to-Speech) Application is a Node.js-based service designed to convert text into spoken words, leveraging the Azure Cognitive Services Speech SDK. This application listens for text input via an HTTP server or directly from the clipboard and processes the text through a markdown preprocessor and an XML escaper before sending it to Azure's Text-to-Speech engine.
+```markdown
+# Advanced Text-to-Speech (TTS) Service
 
-## Features
+The Advanced TTS Service is a robust, Node.js-based solution designed to convert textual content into lifelike speech. Leveraging Azure Cognitive Services Speech SDK, this service introduces an innovative approach to processing and synthesizing speech, equipped with features like clipboard monitoring, HTTP server integration, markdown preprocessing, and XML character escaping. It's engineered for extensibility, maintainability, and seamless Azure integration, catering to a wide range of text-to-speech conversion needs.
 
-- **Clipboard Monitoring**: Automatically detects and processes text copied to the clipboard prefixed with "TTS".
-- **HTTP Server**: Accepts text input via HTTP POST requests for conversion to speech.
-- **Markdown Preprocessing**: Converts markdown-formatted text to plain text suitable for speech synthesis.
-- **XML Character Escaping**: Ensures text is safe for XML/SSML processing by escaping special characters.
+## Core Features
 
-## Prerequisites
+- **Clipboard Monitoring**: Employs a sophisticated listener to detect and process text copied to the clipboard, prefixed with a customizable trigger word, facilitating immediate TTS conversion.
+- **HTTP Server Integration**: Features an HTTP server capable of accepting text input via POST requests, enabling programmatic text-to-speech conversion through web services.
+- **Markdown Preprocessing**: Incorporates a markdown preprocessor that converts markdown-formatted text into plain text, optimizing it for speech synthesis.
+- **XML Character Escaping**: Utilizes an XML escaper to ensure text safety for XML/SSML processing, thereby enhancing the versatility and reliability of speech synthesis.
+- **Queue Management**: Implements a TTS queue management system to manage and sequence text inputs for processing, ensuring orderly speech synthesis.
+- **Azure Cognitive Speech Service Integration**: Seamlessly integrates with Azure's TTS service, supporting advanced SSML generation for enriched speech synthesis experiences.
+- **Audio Playback**: Facilitates the playback of synthesized speech audio streams through system speakers, providing an immediate auditory output of the processed text.
 
-- Node.js (18.5 or newer recommended)
-- An Azure account with a Cognitive Services Speech subscription
+## Project Structure
 
-## Installation
+```
+.
+├── README.md
+├── app.js
+├── config
+│   └── voiceSettings.json
+├── package.json
+├── pnpm-lock.yaml
+└── src
+    ├── controllers
+    │   └── ttsController.js
+    ├── listeners
+    │   └── clipboardListener.js
+    ├── preprocessors
+    │   ├── markdownPreprocessor.js
+    │   └── xmlEscaper.js
+    ├── services
+    │   ├── textExtractor.js
+    │   ├── ttsQueue.js
+    │   └── ttsServiceAzureAI.js
+    └── utils
+        ├── logger.js
+        ├── notifier.js
+        ├── playAudioStream.js
+        └── ssmlGenerator.js
+```
 
-1. **Clone the repository**
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v18.5 or newer recommended)
+- An Azure account with an active Cognitive Services Speech subscription
+
+### Installation
+
+1. **Clone the Repository**
 
    ```bash
    git clone https://github.com/TheGreenJosip/TTS-package
    cd TTS-package
    ```
 
-2. **Install dependencies**
+2. **Install Dependencies**
 
-   Using npm:
-
-   ```bash
-   npm install
-   ```
-
-   Or, using pnpm:
+   Using pnpm:
 
    ```bash
    pnpm install
    ```
 
-3. **Configure environment variables**
+3. **Configure Environment Variables**
 
-   Create a `.env` file based on the .env.sample in the root directory of the project, and add your Azure Cognitive Services Speech subscription key and region:
+   Populate a `.env` file in the project root with your Azure subscription key, region, and other configurations:
 
    ```plaintext
    SPEECH_KEY=your_subscription_key_here
    SPEECH_REGION=your_region_here
-   ```
-
-   You can adapt the key word where the service will sttart picking up your input and also the port for the API running in the background providing an endpoint to integrate a siri shortcut for example.
-
-
-   ```plaintext
    TRIGGER_WORD=your_trigger_word
    PORT=your_api_port
    ```
 
-## Usage
+### Usage
 
-You'll find two files dedicated to manipulate the input text before sending it to azure cognitive speech service. Common markdown and XML based formatting is adapted to not produce errors. Each file is descriptive and can be customized to match different preferences.
+#### Starting the Service
 
-  ```plaintext
-   markdownPreprocessor.js
-   xmlEscaper.js
-   ```
-
-### Starting the Application
-
-Run the application with the following command:
+Execute the following command to start the TTS service:
 
 ```bash
-node clipboardListener.js
+node app.js
 ```
 
-The server will start listening for clipboard changes and HTTP POST requests on the set port.
+This initiates the clipboard monitoring and HTTP server, ready to process text for speech synthesis.
 
-### Sending Text via HTTP
+#### HTTP API
 
-To send text for speech synthesis via HTTP, use the following `curl` command:
+To convert text to speech via HTTP, send a POST request:
 
 ```bash
 curl -X POST http://localhost:PORT/tts -H "Content-Type: application/json" -d "{\"text\":\"Hello, world!\"}"
 ```
 
-### Copying Text to Clipboard
+#### Clipboard Interaction
 
-Prefix any text with "TTS/tts" by default or use your own word and copy it to the clipboard. The application will automatically detect and process the text.
+Copy any text prefixed with the trigger word (default: "TTS") to the clipboard. The service will automatically detect, process, and convert the text to speech.
 
-You can also add text subsequently to a queue which the service will speak one after another.
+## Advanced Configuration
 
-## Files and Directories
-
-- `clipboardListener.js`: Main application script that starts the server and monitors the clipboard.
-- `markdownPreprocessor.js`: Module for converting markdown text to plain text.
-- `xmlEscaper.js`: Module for escaping special XML characters in text.
-- `ttsServiceAzureAI.js`: Module for interfacing with Azure's Text-to-Speech service.
-- `package.json` & `pnpm-lock.yaml`: Project metadata and dependency lock files.
-- `node_modules/`: Directory containing all the project dependencies (generated after installation).
+The `config/voiceSettings.json` file allows for detailed customization of voice and speech patterns. Adjust settings here to tailor the TTS output to your preferences.
 
 ## Contributing
 
-Contributions to the TTS Application are welcome! Please follow these steps to contribute:
+Contributions are welcome! Please refer to the contributing guidelines for more details on how to participate in the project's development.
 
-1. **Fork the Repository**: Click the "Fork" button at the top right of this page.
-2. **Clone Your Fork**: Clone your fork to your local machine.
-3. **Create a Feature Branch**: `git checkout -b my-new-feature`
-4. **Make Your Changes**: Add your feature or fix bugs.
-5. **Commit Your Changes**: `git commit -am 'Add some feature'`
-6. **Push to the Branch**: `git push origin my-new-feature`
-7. **Submit a Pull Request**: Open a new pull request from your feature branch to the original project.
+## Running in Background
 
-Please ensure your code adheres to the project's coding standards and include tests for new features or fixes.
-
-## Starting in the Background
-
-To use the service as background listener use pm2 like:
+To run the service in the background, consider using `pm2`:
 
 ```bash
-pm2 start clipboardListener.js --name tts
-```
-You can stop and start it also using the following comands:
-
-```bash
-pm2 stop tts
+pm2 start app.js --name tts-service
 ```
 
-and 
-
-```bash
-pm2 start clipboardListener.js --name tts
-```
+Manage the service with `pm2 stop tts-service` and `pm2 start tts-service`.
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE), and can be used freely.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+```
+
+### Key Points
+
+- **Sophisticated Introduction**: The introduction now clearly outlines the service's capabilities and its integration with Azure Cognitive Services, setting a professional tone.
+- **Detailed Feature Descriptions**: Each feature is described in detail, highlighting the service's functionality and technical sophistication.
+- **Comprehensive Project Structure**: The updated project structure reflects the latest changes, providing clarity on the organization and modularity of the codebase.
+- **Streamlined Getting Started Section**: The installation and usage instructions are concise, making it easy for users to get the service up and running.
+- **Advanced Configuration**: A brief mention of advanced configuration options encourages users to explore and customize the service further.
+- **Professional Tone**: Throughout the document, the language and structure aim to communicate a high level of professionalism and attention to detail, targeting an audience of senior developers and technical users.
+
+This `README.md` serves as a comprehensive guide to your project, reflecting the latest structural changes and functionalities while maintaining a sophisticated and professional tone suitable for a senior developer audience.
