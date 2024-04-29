@@ -121,7 +121,6 @@ Manage the service with `pm2 stop tts-service` and `pm2 start tts-service`.
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-```
 
 ### Key Points
 
