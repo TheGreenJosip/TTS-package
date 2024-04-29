@@ -1,6 +1,3 @@
-Given the restructuring and enhancements made to your project, the `README.md` should be updated to reflect these changes accurately. Below is a sophisticated and comprehensive `README.md` that incorporates all the modifications and adheres to best practices for documentation.
-
-```markdown
 # Advanced Text-to-Speech (TTS) Service
 
 The Advanced TTS Service is a robust, Node.js-based solution designed to convert textual content into lifelike speech. Leveraging Azure Cognitive Services Speech SDK, this service introduces an innovative approach to processing and synthesizing speech, equipped with features like clipboard monitoring, HTTP server integration, markdown preprocessing, and XML character escaping. It's engineered for extensibility, maintainability, and seamless Azure integration, catering to a wide range of text-to-speech conversion needs.
@@ -134,5 +131,3 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 - **Streamlined Getting Started Section**: The installation and usage instructions are concise, making it easy for users to get the service up and running.
 - **Advanced Configuration**: A brief mention of advanced configuration options encourages users to explore and customize the service further.
 - **Professional Tone**: Throughout the document, the language and structure aim to communicate a high level of professionalism and attention to detail, targeting an audience of senior developers and technical users.
-
-This `README.md` serves as a comprehensive guide to your project, reflecting the latest structural changes and functionalities while maintaining a sophisticated and professional tone suitable for a senior developer audience.
