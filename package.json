@@ -22,7 +22,6 @@
     "express": "^4.19.2",
     "microsoft-cognitiveservices-speech-sdk": "^1.36.0",
     "node-notifier": "^10.0.1",
-    "play-sound": "^1.1.6",
-    "speaker": "^0.5.4"
+    "play-sound": "^1.1.6"
   }
 }
