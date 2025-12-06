@@ -13,13 +13,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^1.6.8",
+    "axios": "^1.13.2",
     "body-parser": "^1.20.2",
     "chalk": "^5.3.0",
     "cheerio": "1.0.0-rc.12",
     "clipboardy": "^4.0.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "franc-min": "^6.2.0",
+    "langs": "^2.0.0",
     "microsoft-cognitiveservices-speech-sdk": "^1.36.0",
     "node-notifier": "^10.0.1",
     "play-sound": "^1.1.6"
