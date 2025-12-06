@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url';
 function loadVoiceSettings() {
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
-    
+
     const settingsPath = path.join(__dirname, '../../config/voiceSettings.json');
     const settings = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
     return settings;
@@ -64,8 +64,11 @@ function decorateTextWithSSML(text) {
  * @param {string} text - The text to be synthesized.
  * @returns {string} The generated SSML string.
  */
-export function generateSSML(text) {
-    const { voiceName, options } = loadVoiceSettings();
+export function generateSSML(text, overrideVoiceName, overrideOptions) {
+    const settings = loadVoiceSettings();
+    const voiceName = overrideVoiceName || settings.voiceName;
+    const options = overrideOptions || settings.options;
+
     let decoratedText = decorateTextWithSSML(text);
     decoratedText = insertPauses(decoratedText); // Insert pauses after processing decorations
 

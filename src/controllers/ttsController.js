@@ -14,13 +14,30 @@ function loadVoiceSettings() {
   return voiceSettings;
 }
 
-export async function processText(text) {
+export async function processText(text, options = {}) {
   const voiceSettings = loadVoiceSettings();
+  const voiceName = options.voice || voiceSettings.voiceName;
   try {
-    const audioStream = await textToSpeechAzureAI(text, voiceSettings.voiceName, voiceSettings.options);
+    const audioStream = await textToSpeechAzureAI(text, voiceName, voiceSettings.options);
     await playAudioStream(audioStream);
     console.log('Playback finished successfully.');
   } catch (error) {
     console.error('Playback failed:', error);
+  }
+}
+
+export async function getVoices() {
+  try {
+    const voices = await getAvailableVoices();
+    // Transform or filter if necessary, but returning raw list is fine for now
+    return voices.map(v => ({
+      name: v.shortName,
+      displayName: `${v.localName} (${v.locale})`,
+      locale: v.locale,
+      gender: v.gender
+    }));
+  } catch (error) {
+    console.error('Failed to get voices:', error);
+    return [];
   }
 }

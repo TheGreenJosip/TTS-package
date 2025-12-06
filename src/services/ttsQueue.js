@@ -7,24 +7,39 @@ class TTSQueue {
   constructor() {
     this.queue = [];
     this.isProcessing = false;
+    this.isPaused = false;
   }
 
-  enqueue(text) {
-    this.queue.push(text);
+  enqueue(text, options = {}) {
+    this.queue.push({ text, options });
     this.processQueue();
   }
 
+  pause() {
+    this.isPaused = true;
+    console.log('TTS Queue paused.');
+  }
+
+  resume() {
+    if (this.isPaused) {
+      this.isPaused = false;
+      console.log('TTS Queue resumed.');
+      this.processQueue();
+    }
+  }
+
   async processQueue() {
-    if (this.isProcessing || this.queue.length === 0) {
+    if (this.isProcessing || this.isPaused || this.queue.length === 0) {
       return;
     }
 
     this.isProcessing = true;
-    const textToConvert = this.queue.shift();
+    const item = this.queue.shift();
+    const { text, options } = item;
 
     try {
       // Use the processText function from ttsController to process the text
-      await processText(textToConvert);
+      await processText(text, options);
     } catch (error) {
       console.error('Error processing text:', error);
     } finally {
@@ -38,6 +53,7 @@ class TTSQueue {
   clear() {
     this.queue = []; // Clear the queue
     this.isProcessing = false; // Reset the processing flag
+    this.isPaused = false;
     // Optionally, you might want to implement additional logic to stop the current TTS processing immediately
   }
 }
