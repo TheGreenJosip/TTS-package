@@ -1,5 +1,15 @@
+/**
+ * Desktop notification helper (best-effort).
+ * Uses OS notifications when available; failures are intentionally silent.
+ * @module utils/notifier
+ */
+
 import notifier from 'node-notifier';
 
+/**
+ * Sends a desktop notification.
+ * @param {string} message - Notification body.
+ */
 function sendNotification(message) {
   notifier.notify({
     title: 'TTS-listener',

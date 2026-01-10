@@ -1,9 +1,16 @@
+/**
+ * SSML generator.
+ * Produces Azure Speech SSML using defaults from `config/voiceSettings.json`.
+ * @module utils/ssmlGenerator
+ */
+
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 /**
- * Reads the voice settings from the JSON file and returns it.
+ * Reads voice settings from `config/voiceSettings.json`.
+ * @returns {{voiceName: string, options: Object, ssmlDecorations?: Array<Object>}}
  */
 function loadVoiceSettings() {
     const __filename = fileURLToPath(import.meta.url);
@@ -32,9 +39,9 @@ function insertPauses(text) {
 }
 
 /**
- * Replaces or decorates specific terms in the input text with SSML tags based on voice settings.
+ * Applies SSML decorations (phonemes, substitutions, etc.) configured in voice settings.
  * @param {string} text - The input text to be synthesized.
- * @returns {string} The text decorated with SSML tags.
+ * @returns {string} Decorated text.
  */
 function decorateTextWithSSML(text) {
     const { ssmlDecorations } = loadVoiceSettings();
@@ -60,9 +67,12 @@ function decorateTextWithSSML(text) {
 }
 
 /**
- * Generates an SSML string for Azure Cognitive Speech Service with advanced features.
- * @param {string} text - The text to be synthesized.
- * @returns {string} The generated SSML string.
+ * Generates an SSML string for Azure Cognitive Speech Service.
+ *
+ * @param {string} text - Text to be synthesized.
+ * @param {string} [overrideVoiceName] - Optional voice short name override.
+ * @param {Object} [overrideOptions] - Optional options override.
+ * @returns {string} SSML string.
  */
 export function generateSSML(text, overrideVoiceName, overrideOptions) {
     const settings = loadVoiceSettings();

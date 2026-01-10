@@ -72,8 +72,14 @@ The Advanced TTS Service is a robust, Node.js-based solution designed to convert
    ```plaintext
    SPEECH_KEY=your_subscription_key_here
    SPEECH_REGION=your_region_here
-   TRIGGER_WORD=your_trigger_word
-   PORT=your_api_port
+   # Optional (defaults shown)
+   TRIGGER_WORD=TTS
+   PORT=4753
+
+   # Optional queue hardening
+   MAX_QUEUE_LENGTH=100
+   TTS_MAX_RETRIES=2
+   TTS_RETRY_BASE_DELAY_MS=500
    ```
 
 ### Usage
@@ -88,12 +94,66 @@ node app.js
 
 This initiates the clipboard monitoring and HTTP server, ready to process text for speech synthesis.
 
+Default base URL:
+
+- `http://localhost:4753`
+
 #### HTTP API
 
-To convert text to speech via HTTP, send a POST request:
+All endpoints are served from the same base URL (default: `http://localhost:4753`).
+
+##### `POST /tts`
+Enqueue text for speech.
 
 ```bash
-curl -X POST http://localhost:PORT/tts -H "Content-Type: application/json" -d "{\"text\":\"Hello, world!\"}"
+curl -X POST http://localhost:4753/tts \
+   -H "Content-Type: application/json" \
+   -d '{"text":"Hello, world!"}'
+```
+
+Optional voice override (use `GET /voices` to discover values):
+
+```bash
+curl -X POST http://localhost:4753/tts \
+   -H "Content-Type: application/json" \
+   -d '{"text":"Hello, world!","voice":"en-US-AvaNeural"}'
+```
+
+##### `POST /pause`
+Pause queue processing.
+
+```bash
+curl -X POST http://localhost:4753/pause
+```
+
+##### `POST /resume`
+Resume queue processing.
+
+```bash
+curl -X POST http://localhost:4753/resume
+```
+
+##### `POST /stop-tts`
+Clears any queued items. (In-flight audio playback may continue until it finishes.)
+
+```bash
+curl -X POST http://localhost:4753/stop-tts
+```
+
+##### `GET /voices`
+Returns available voices.
+
+```bash
+curl http://localhost:4753/voices
+```
+
+##### `POST /extract-text`
+Fetches the visible text from a URL and enqueues it.
+
+```bash
+curl -X POST http://localhost:4753/extract-text \
+   -H "Content-Type: application/json" \
+   -d '{"url":"https://example.com"}'
 ```
 
 #### Clipboard Interaction
@@ -103,6 +163,14 @@ Copy any text prefixed with the trigger word (default: "TTS") to the clipboard. 
 ## Advanced Configuration
 
 The `config/voiceSettings.json` file allows for detailed customization of voice and speech patterns. Adjust settings here to tailor the TTS output to your preferences.
+
+## Optional Frontend Dashboard
+
+The `frontend/` folder contains a small React/Vite dashboard for convenience.
+
+- Create `frontend/.env` based on `frontend/.env.example`
+- Set:
+   - `VITE_API_BASE_URL=http://localhost:4753`
 
 ## Contributing
 

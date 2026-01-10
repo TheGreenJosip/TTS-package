@@ -1,4 +1,10 @@
 /**
+ * Markdown-to-TTS preprocessing.
+ * Converts common markdown constructs into speech-friendly plain text.
+ * @module preprocessors/markdownPreprocessor
+ */
+
+/**
  * Prepares text for TTS by removing or replacing certain markdown elements,
  * specifically targeting code blocks while preserving inline code, filenames,
  * function names, and removing URLs.
@@ -8,8 +14,8 @@
  * "code snippet removed." URLs are also removed to prevent the TTS service from
  * reading them aloud.
  * 
- * @param {string} text The input text containing markdown, code snippets, and URLs.
- * @return {string} The processed text, ready for TTS.
+ * @param {string} text - The input text containing markdown, code snippets, and URLs.
+ * @returns {string} The processed text, ready for TTS.
  */
 export function prepareTextForTTS(text) {
   // Temporarily replace inline code with a placeholder

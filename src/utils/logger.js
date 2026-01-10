@@ -1,5 +1,16 @@
+/**
+ * Simple colored logger.
+ * Provides consistent timestamped log output.
+ * @module utils/logger
+ */
+
 import chalk from 'chalk';
 
+/**
+ * Logs a message to stdout/stderr.
+ * @param {string} message - Message to log.
+ * @param {'info'|'error'|'request'|string} [level='info'] - Log level.
+ */
 function log(message, level = 'info') {
   const timestamp = new Date().toISOString();
   switch (level) {

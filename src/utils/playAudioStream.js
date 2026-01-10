@@ -1,12 +1,7 @@
 /**
- * playAudioStream.js
- * 
- * This script defines a `playAudioStream` function that takes an audio stream as input,
- * writes it to a temporary file, and plays it using the `play-sound` module. 
- * The function ensures proper cleanup of the temporary file after playback.
- * 
- * The `play-sound` module is used to shell out to an available audio player on the system.
- * This approach is compatible with Apple Silicon (M1/M2/M3) and other platforms.
+ * Audio playback helper.
+ * Writes a stream to a temporary WAV file and plays it via an available system player.
+ * @module utils/playAudioStream
  */
 
 import fs from 'fs';
@@ -23,15 +18,17 @@ const unlinkAsync = promisify(fs.unlink);
 const audioPlayer = player();
 
 /**
- * Plays the given audio stream by writing it to a temporary file and using `play-sound` to play it.
- * @param {Stream} audioStream - The audio stream to play.
- * @returns {Promise<void>} - Resolves when playback finishes or rejects if an error occurs.
+ * Plays the given audio stream.
+ *
+ * @async
+ * @param {import('stream').Readable} audioStream - Audio stream to play.
+ * @returns {Promise<void>} Resolves when playback finishes.
  */
 export async function playAudioStream(audioStream) {
   // Step 1: Create a temporary file to store the audio data
   const tempFilePath = path.join(os.tmpdir(), `audio-${Date.now()}.wav`);
 
-  // Step 2: Write the audio stream to the temporary file
+  // Step 2: Write the audio stream to the temporary file.
   await new Promise((resolve, reject) => {
     const passThrough = new PassThrough(); // PassThrough stream to handle the audio data
     const writeStream = fs.createWriteStream(tempFilePath);
@@ -48,7 +45,7 @@ export async function playAudioStream(audioStream) {
     });
   });
 
-  // Step 3: Play the audio file using `play-sound`
+  // Step 3: Play the audio file using `play-sound`.
   return new Promise((resolve, reject) => {
     audioPlayer.play(tempFilePath, (err) => {
       // Step 4: Clean up the temporary file after playback

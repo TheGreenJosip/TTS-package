@@ -1,8 +1,13 @@
 /**
+ * XML/SSML escaping helpers.
+ * @module preprocessors/xmlEscaper
+ */
+
+/**
  * Escapes special characters in a string for XML/SSML compatibility.
  * 
- * @param {string} text The input text containing characters to be escaped.
- * @return {string} The escaped text, safe for XML/SSML usage.
+ * @param {string} text - The input text containing characters to be escaped.
+ * @returns {string} The escaped text, safe for XML/SSML usage.
  */
 export function escapeXML(text) {
   return text.replace(/&/g, '&amp;') // Escape ampersands.

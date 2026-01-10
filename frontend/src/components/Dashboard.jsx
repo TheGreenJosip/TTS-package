@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Play, Download, Pause, Square, Activity, Volume2, Globe } from 'lucide-react';
+import { Play, Pause, Activity, Volume2, Globe } from 'lucide-react';
 import axios from 'axios';
 
-const API_Base = 'http://localhost:4040';
+const API_Base = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4753';
 
 
 // Removed hardcoded voices

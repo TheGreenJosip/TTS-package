@@ -1,3 +1,9 @@
 # files to be ignored by git
 .env
 node_modules
+
+# Local artifacts
+tts-package-context-dump.txt
+
+# aider-related
+.aider.*
